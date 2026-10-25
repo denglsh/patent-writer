@@ -16,6 +16,8 @@ description: 辅助撰写中国发明专利（CNIPA）申请文件。启动时�
 - `scripts/wordfmt/` —— Word 版式引擎（vendored 自 format-xingwen-word-skill 并扩展专利预设）：`python format_document.py <in.docx> --preset patent --output <out.docx> --report <r.json>`，按参考专利版式（楷体四号、首行缩进2字符、1.5倍行距、段前0.2行、A4 2.5/2.5/2.5/1.5cm、不带行号）做零内容改动归一。
 - `references/word-format-spec.md` —— 参考专利版式规格表、角色识别规则与排版操作流程。
 - `references/formula-audit.md` —— 公式审计模块：无公式时按逻辑关系生成的规则与铁律、覆盖性/连贯性/变量清晰性三项审计、《公式审计表》格式与执行时点。
+- `references/disclosure-interview.md` —— 交底书生成器：访谈规则、特征三问审计（存在/清晰/可实现）、《技术交底书》结构与收尾衔接。
+- `references/figure-generation.md` —— 附图自动生成：工具探测顺序（draw.io CLI 优先、matplotlib 零安装兜底）、CNIPA 黑白线图硬性要求、matplotlib 模板与插入流程。
 - `scripts/wordfmt/latex2omml.py` —— LaTeX → OMML 转换器：`python latex2omml.py '<latex>' --display` 输出 Word 公式对象 XML 片段（依赖 latex2mathml + mathml2omml）。
 
 每次启动本 skill 必须先完整读一遍所选 playbook 再动笔；本文件只负责编排与交互，不重复 playbook 规则。
@@ -28,7 +30,13 @@ description: 辅助撰写中国发明专利（CNIPA）申请文件。启动时�
 - 每步输出后等用户确认：1=继续下一步 2=修改本步 3=其他（推荐项标注"推荐"）。
 - 撰写产物只交付 Word（.docx）：自第1步起，所有章节内容写入同一个 docx 文件；会话中只展示状态、自检清单与确认提示，不粘贴章节全文。
 
-## 阶段 A：启动与两项必要材料
+## 阶段 A：启动、模式与两项必要材料
+
+0. 先问运行模式（编号形式）：
+   > 1. 已有技术框架/交底书，直接撰写专利（推荐）
+   > 2. 只有想法或初步资料——先生成《技术交底书》，确认后再撰写
+   > 3. 只生成《技术交底书》，不撰写专利
+   选 2/3 时读 references/disclosure-interview.md：执行访谈与特征三问审计（存在/清晰/可实现），产出交底书 docx（复用 Word 交付机制与版式归一）。选 2 在用户确认交底书后，以其为技术框架继续下面第 1 步。
 
 **两项必要材料：① 技术框架/交底书；② 参考专利。** 启动时依次收集，缺哪项就用编号提示补哪项；用户一次给齐则直接确认进入。
 
@@ -68,6 +76,7 @@ description: 辅助撰写中国发明专利（CNIPA）申请文件。启动时�
    - 版式：每条公式**独立成段、居中**，不得与正文混排一段（模式："……记为"正文段 → 公式行 → 变量定义段/下一正文段）。
    - 流程：审计表确认后，撰写到对应章节时逐条落实——公式写成 LaTeX → `python scripts/wordfmt/latex2omml.py '<latex>' --display` 生成 OMML 片段 → 将片段插入对应段落（docx 类技能、python-docx 或 OOXML 编辑；片段不带 xmlns:m，document.xml 根已声明）→ 版式归一。
    - 阶段 C 终检对照《公式审计表》逐条核对：公式齐全、变量解释齐全、逻辑链闭合。
+9. **附图生成**：第6步《附图说明与绘图需求清单》确认后，读 references/figure-generation.md 逐图生成黑白线图（PNG，300dpi）并插入 docx 对应附图位置（图号在图下方居中，与附图说明逐字一致）；工具探测 draw.io CLI 可用则优先，否则 matplotlib 零安装方案；用户可编号要求重绘（1=全部通过 2=某幅重绘）。
 
 ## 阶段 C：终检、全篇合规复审与导出
 
@@ -77,7 +86,7 @@ description: 辅助撰写中国发明专利（CNIPA）申请文件。启动时�
    - 对照 `references/quality-constraints.md` 全部条款逐条过（保护范围、从权梯队、清楚性红线、说明书支撑、技术问题、低质量申请红线、算法类发明的撰写要点）；
    - 对照 `references/formula-audit.md`——《公式审计表》逐条核对已落实，公式独立成段居中、变量解释齐全、逻辑链闭合。
    输出《全篇合规复审报告》：逐项"通过 / 违规（章节位置 + 问题描述）"。**所有违规当场修复并复检**，向用户报告修复清单；复审全通过后才进入下一步。
-3. 检查交付文件 `<发明名称>.docx`：**文档顶部有发明名称标题行（居中加粗）**、所有占位段已替换、章节齐全（摘要 → 权利要求书 → 说明书各章 → 附图清单）、摘要附图指定到位；跑一次 diagnose-only（--preset patent）确认 status=ok 且无 warnings——排版（字体/字号/缩进/行距/页边距、无行号）由专利预设保证与参考专利一致。
+3. 检查交付文件 `<发明名称>.docx`：**文档顶部有发明名称标题行（居中加粗）**、所有占位段已替换、章节齐全（摘要 → 权利要求书 → 说明书各章 → 附图）、摘要附图指定到位、附图已生成插入（或已提供 PNG 文件）；跑一次 diagnose-only（--preset patent）确认 status=ok 且无 warnings——排版（字体/字号/缩进/行距/页边距、无行号）由专利预设保证与参考专利一致。
 4. 展示最终文件路径并交付；附绘图需求清单，提醒用户附图需另行绘制。
 4. 附上绘图需求清单，提醒用户附图需另行绘制。
 
