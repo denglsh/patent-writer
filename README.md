@@ -12,6 +12,10 @@
 git clone https://github.com/denglsh/patent-writer.git ~/.agents/skills/patent-writer && pip install -r ~/.agents/skills/patent-writer/scripts/wordfmt/requirements.txt
 ```
 
+## 使用
+
+对 agent 说"帮我写专利"，依次提供技术框架（或交底书）与参考专利，之后每步只按编号回复 1/2/3，最终在 Word 中逐章审阅并拿到排好版的完整申请文件。
+
 ## 依赖
 
 - Python 3.10+
