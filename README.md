@@ -6,16 +6,11 @@
 
 从**技术框架/交底书 + 参考专利**两项必要材料出发，先确定格式模板（内置 playbook，或由 skill 自动从参考专利提取），再逐章生成权利要求书、说明书、摘要等完整申请文件（约 12000~15000 字），全文终检后交付统一排版的 .docx。
 
-## 跨 Agent 安装
+## 安装
 
-| 环境 | 安装位置 | 说明 |
-|---|---|---|
-| ZCode | `~/.agents/skills/patent-writer/`（全局）或项目 `.agents/skills/` | 原生支持，自动触发 |
-| Claude Code / Claude.ai | `~/.claude/skills/patent-writer/` 或项目 `.claude/skills/` | 同为 Agent Skills 格式 |
-| 其他遵循 Agent Skills 规范的工具 | 按各工具文档指定的 skills 目录放置 | 格式通用 |
-| 不支持该格式的 Agent | 将 SKILL.md 与 references/ 作为提示词/上下文手动提供 | 撰写流程与规则照常生效；scripts 可在命令行独立调用 |
-
-对运行环境的唯一要求是具备 **.docx 创建与 OOXML 编辑能力**：SKILL.md 已写成工具无关的表述——有 docx 类技能的环境直接调用；没有的环境用 python-docx 或直接编辑 OOXML，脚本链路完全一致。
+```bash
+git clone https://github.com/denglsh/patent-writer.git ~/.agents/skills/patent-writer && pip install -r ~/.agents/skills/patent-writer/scripts/wordfmt/requirements.txt
+```
 
 ## 依赖
 
