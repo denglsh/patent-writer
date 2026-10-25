@@ -8,9 +8,16 @@
 
 ## 安装
 
+命令行安装：
+
 ```bash
-git clone https://github.com/denglsh/patent-writer.git ~/.agents/skills/patent-writer && pip install -r ~/.agents/skills/patent-writer/scripts/wordfmt/requirements.txt
+git clone https://github.com/denglsh/patent-writer.git ~/.agents/skills/patent-writer
+pip install -r ~/.agents/skills/patent-writer/scripts/wordfmt/requirements.txt
 ```
+
+或者在任意 Agent 里直接说一句话：
+
+> 帮我把 GitHub 上的 denglsh/patent-writer 克隆安装为你的专利撰写技能（放进你的 skills 目录），并安装 scripts/wordfmt/requirements.txt 里的依赖。
 
 ## 使用
 
