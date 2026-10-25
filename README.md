@@ -1,6 +1,6 @@
 # patent-writer
 
-辅助撰写中国发明专利（CNIPA）申请文件的 Agent Skill——采用开放的 **Agent Skills 格式**（SKILL.md + references/ + scripts/ + assets/），不绑定特定 Agent 工具。
+辅助撰写中国发明专利（CNIPA）申请文件的 Agent Skill——采用开放的 **Agent Skills 格式**，不绑定特定 Agent 工具。
 
 ## 用途
 
