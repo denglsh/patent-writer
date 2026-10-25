@@ -69,7 +69,7 @@ PRESETS["patent"] = {
         "line_pitch_twips": 312,
         "line_number_count_by": None,  # 用户要求去除行号（2026-10-25）；如需恢复改为 5
     },
-    "main_title": {"font": "楷体", "latin_font": "Times New Roman", "size": 14, "bold": True, "align": "center", "line_multiple": 1.5, "widow_control": True},
+    "main_title": {"font": "楷体", "latin_font": "Times New Roman", "size": 14, "bold": True, "align": "center", "first_indent_chars": 0, "line_multiple": 1.5, "widow_control": True},
     "heading_1": {"font": "楷体", "latin_font": "Times New Roman", "size": 14, "bold": True, "align": "left", "first_indent": 0, "line_multiple": 1.5, "widow_control": True},
     "heading_2": {"font": "楷体", "latin_font": "Times New Roman", "size": 14, "bold": True, "align": "left", "first_indent": 0, "line_multiple": 1.5, "widow_control": True},
     "body": {"font": "楷体", "latin_font": "Times New Roman", "size": 14, "align": "justify", "first_indent_chars": 2, "line_multiple": 1.5, "space_before_lines": 0.2, "widow_control": True},

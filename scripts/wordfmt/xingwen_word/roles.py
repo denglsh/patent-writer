@@ -113,6 +113,9 @@ def patent_role_candidates(text: str) -> list[RoleCandidate]:
         return [role_candidate("main_title", 0.99, ["patent_part_header"])]
     if compact in PATENT_SECTION_HEADERS:
         return [role_candidate("heading_1", 0.99, ["patent_section_header"])]
+    # 发明名称标题行（如"一种……方法及系统"）：居中加粗，与参考专利 2026D0071IN 版式一致
+    if re.match(r"^一种[\u4e00-\u9fff]+方法(及系统)?$", compact):
+        return [role_candidate("main_title", 0.95, ["patent_invention_name_line"])]
     if compact.startswith("（指定图") or compact.startswith("(指定图"):
         return [role_candidate("note", 0.97, ["patent_abstract_figure_note"])]
     return [role_candidate("body", 0.92, ["patent_body_default"])]
