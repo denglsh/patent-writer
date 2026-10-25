@@ -17,7 +17,11 @@ patent-writer/
 ├── SKILL.md                        ← 流程编排与交互规则
 ├── references/
 │   ├── writing-playbook-cn.md      ← 内置分章节撰写提示词（基于 2026D0071IN 参考格式预提取）
-│   └── format-extraction.md        ← 参考专利格式提取提示词（自动生成专属 playbook）
+│   ├── format-extraction.md        ← 参考专利格式提取提示词（自动生成专属 playbook）
+│   ├── quality-constraints.md      ← 专利实体质量约束（保护范围/从权梯队/清楚性红线）
+│   └── word-format-spec.md         ← 参考专利 Word 版式规格与排版流程
+├── scripts/
+│   └── wordfmt/                    ← Word 版式引擎（--preset patent，零内容改动归一）
 └── assets/
     └── 2026D0071IN-…-六稿.docx     ← 自带参考专利原件（风电叶片应变传感器布局方法及系统）
 ```
@@ -32,6 +36,7 @@ patent-writer/
 
 - 固定流水线，全程用户只需回答编号选项（1/2/3）
 - 每章写完即写入同一个 .docx（建骨架留占位 + 逐章替换），下一章接着上一章的 Word 写，会话中不贴全文
+- 排版自动对齐参考专利（楷体四号、首行缩进2字符、1.5倍行距、每5行行号），每章写入后零内容改动归一
 - 四处逐字镜像复用纪律（权利要求 ↔ 发明内容 ↔ 实施例 ↔ 系统模块）
 - 内置 CNIPA 硬性要求自检（"所述"链条、摘要 ≤300 字、编号格式等）
 - 具体实例数值【待填】确认机制，避免 AI 编造数据
