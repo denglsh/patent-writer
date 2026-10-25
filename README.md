@@ -38,6 +38,7 @@ patent-writer/
 │   ├── writing-playbook-cn.md      ← 内置分章节撰写提示词（基于 2026D0071IN 参考格式预提取）
 │   ├── format-extraction.md        ← 参考专利格式提取提示词（自动生成专属 playbook）
 │   ├── quality-constraints.md      ← 专利实体质量约束（保护范围/从权梯队/清楚性红线）
+│   ├── formula-audit.md            ← 公式审计模块（生成规则 + 三项审计 + 审计表）
 │   └── word-format-spec.md         ← 参考专利 Word 版式规格与排版流程
 ├── scripts/
 │   └── wordfmt/                    ← 版式引擎（--preset patent 归一）+ latex2omml.py（LaTeX→公式对象）
@@ -59,4 +60,4 @@ patent-writer/
 - 四处逐字镜像复用纪律（权利要求 ↔ 发明内容 ↔ 实施例 ↔ 系统模块）
 - 内置 CNIPA 硬性要求自检（"所述"链条、摘要 ≤300 字、编号格式等）
 - 具体实例数值【待填】确认机制，避免 AI 编造数据
-- 公式强制以 Word 公式对象呈现（LaTeX → OMML），独立成段居中，禁止文字化省略
+- 公式强制以 Word 公式对象呈现（LaTeX → OMML），独立成段居中；无公式时按逻辑关系生成并经三项审计（覆盖性/连贯性/变量清晰性，禁止模糊变量）

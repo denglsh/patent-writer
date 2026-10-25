@@ -15,6 +15,7 @@ description: 辅助撰写中国发明专利（CNIPA）申请文件。启动时�
 - `assets/2026D0071IN-一种风电叶片服役性能感知应变传感器布局方法及系统-六稿.docx` —— 自带参考专利原件，内置 playbook 的提取来源与格式兜底依据。
 - `scripts/wordfmt/` —— Word 版式引擎（vendored 自 format-xingwen-word-skill 并扩展专利预设）：`python format_document.py <in.docx> --preset patent --output <out.docx> --report <r.json>`，按参考专利版式（楷体四号、首行缩进2字符、1.5倍行距、段前0.2行、A4 2.5/2.5/2.5/1.5cm、不带行号）做零内容改动归一。
 - `references/word-format-spec.md` —— 参考专利版式规格表、角色识别规则与排版操作流程。
+- `references/formula-audit.md` —— 公式审计模块：无公式时按逻辑关系生成的规则与铁律、覆盖性/连贯性/变量清晰性三项审计、《公式审计表》格式与执行时点。
 - `scripts/wordfmt/latex2omml.py` —— LaTeX → OMML 转换器：`python latex2omml.py '<latex>' --display` 输出 Word 公式对象 XML 片段（依赖 latex2mathml + mathml2omml）。
 
 每次启动本 skill 必须先完整读一遍所选 playbook 再动笔；本文件只负责编排与交互，不重复 playbook 规则。
@@ -62,9 +63,11 @@ description: 辅助撰写中国发明专利（CNIPA）申请文件。启动时�
    - **版式归一**：每章写入（或修改）docx 后，立即运行 `scripts/wordfmt/format_document.py <docx> --preset patent --output <临时> --report <json>` 做专利版式归一（字体/字号/缩进/行距/页边距自动对齐参考专利、不带行号，详见 references/word-format-spec.md）。报告 status=ok 且未 withheld 时，用临时文件替换原 docx 再请用户审阅；否则保留原文件先修复。
 8. **公式纪律（用户显式要求，优先于 playbook 总纲第 7 条"公式一律文字化"）**：
    - 技术框架中出现的**所有公式必须以 Word 公式对象写入正文**，禁止省略、禁止只用文字描述替代公式本身；变量含义仍用文字化句说明（"其中/式中，X为……"），紧随公式之后。
+   - **公式生成**：技术框架没有公式（或某环节明显缺公式）时，按技术方案的逻辑关系构造公式——只表达框架已有的处理逻辑，禁止发明新环节；逐条标注来源（框架 / 生成+依据）。
+   - **公式审计（必经）**：第0步读 `references/formula-audit.md`，对全部公式执行三项审计——覆盖性（何处需补公式）、逻辑连贯性（公式间变量衔接闭合、与文字描述一致）、变量清晰性（不允许模糊变量，每个符号含下标上标逐一解释、带单位），输出《公式审计表》请用户编号确认；确认后作为撰写与终检的基准。
    - 版式：每条公式**独立成段、居中**，不得与正文混排一段（模式："……记为"正文段 → 公式行 → 变量定义段/下一正文段）。
-   - 流程：第0步时技术框架若含公式，输出《公式清单》（逐条 LaTeX + 拟插入章节）请用户编号确认完整；撰写到对应章节时逐条落实——公式写成 LaTeX → `python scripts/wordfmt/latex2omml.py '<latex>' --display` 生成 OMML 片段 → 将片段插入对应段落（用 docx 类技能、python-docx 或 OOXML 编辑；片段不带 xmlns:m，document.xml 根已声明该命名空间）→ 版式归一。
-   - 阶段 C 终检须对照《公式清单》逐条核对已写入。
+   - 流程：审计表确认后，撰写到对应章节时逐条落实——公式写成 LaTeX → `python scripts/wordfmt/latex2omml.py '<latex>' --display` 生成 OMML 片段 → 将片段插入对应段落（docx 类技能、python-docx 或 OOXML 编辑；片段不带 xmlns:m，document.xml 根已声明）→ 版式归一。
+   - 阶段 C 终检对照《公式审计表》逐条核对：公式齐全、变量解释齐全、逻辑链闭合。
 
 ## 阶段 C：终检与导出
 
