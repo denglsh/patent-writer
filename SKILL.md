@@ -13,7 +13,7 @@ description: 辅助撰写中国发明专利（CNIPA）申请文件。启动时�
 - `references/format-extraction.md` —— 参考专利格式提取提示词：用户提供自己的参考专利时，按它从参考专利生成新的逐章节 playbook。
 - `references/quality-constraints.md` —— 专利实体质量约束：保护范围把控（独权四问）、从权梯队退守、清楚性红线（禁用词）、说明书支撑规则、低质量申请红线。第1步动笔前读，终检对照。
 - `assets/2026D0071IN-一种风电叶片服役性能感知应变传感器布局方法及系统-六稿.docx` —— 自带参考专利原件，内置 playbook 的提取来源与格式兜底依据。
-- `scripts/wordfmt/` —— Word 版式引擎（vendored 自 format-xingwen-word-skill 并扩展专利预设）：`python format_document.py <in.docx> --preset patent --output <out.docx> --report <r.json>`，按参考专利版式（楷体四号、首行缩进2字符、1.5倍行距、段前0.2行、A4 2.5/2.5/2.5/1.5cm、每5行行号）做零内容改动归一。
+- `scripts/wordfmt/` —— Word 版式引擎（vendored 自 format-xingwen-word-skill 并扩展专利预设）：`python format_document.py <in.docx> --preset patent --output <out.docx> --report <r.json>`，按参考专利版式（楷体四号、首行缩进2字符、1.5倍行距、段前0.2行、A4 2.5/2.5/2.5/1.5cm、不带行号）做零内容改动归一。
 - `references/word-format-spec.md` —— 参考专利版式规格表、角色识别规则与排版操作流程。
 
 每次启动本 skill 必须先完整读一遍所选 playbook 再动笔；本文件只负责编排与交互，不重复 playbook 规则。
@@ -58,12 +58,12 @@ description: 辅助撰写中国发明专利（CNIPA）申请文件。启动时�
    - 每章生成后直接写入 docx 中对应章节位置（替换占位段），然后请用户打开文件审阅该章，回复 1=通过、2=修改；修改直接改 docx 中该章再请审阅。第1步（权利要求书）确认后写入时即完成建文件与骨架。
    - 撰写每一章之前必须先读 docx 中已有章节：术语与"所述"链条以 docx 已有内容为准，不以会话记忆为准。
    - 每次写入后在会话中报一行进度（如"已写入第3步《技术领域》，进度 3/8"），不粘贴章节全文。
-   - **版式归一**：每章写入（或修改）docx 后，立即运行 `scripts/wordfmt/format_document.py <docx> --preset patent --output <临时> --report <json>` 做专利版式归一（字体/字号/缩进/行距/页边距/行号自动对齐参考专利，详见 references/word-format-spec.md）。报告 status=ok 且未 withheld 时，用临时文件替换原 docx 再请用户审阅；否则保留原文件先修复。
+   - **版式归一**：每章写入（或修改）docx 后，立即运行 `scripts/wordfmt/format_document.py <docx> --preset patent --output <临时> --report <json>` 做专利版式归一（字体/字号/缩进/行距/页边距自动对齐参考专利、不带行号，详见 references/word-format-spec.md）。报告 status=ok 且未 withheld 时，用临时文件替换原 docx 再请用户审阅；否则保留原文件先修复。
 
 ## 阶段 C：终检与导出
 
 1. 执行所选 playbook 的全文终检清单，并加做 references/quality-constraints.md 第七节的终检加做项（独权四问、从权守点、扮演对手堵口、禁用词、端值支撑、扩写增量），逐项输出结果；不通过项先修复再复检。
-2. 检查交付文件 `<发明名称>.docx`：所有占位段已替换、章节齐全（摘要 → 权利要求书 → 说明书各章 → 附图清单）、摘要附图指定到位；跑一次 diagnose-only（--preset patent）确认 status=ok 且无 warnings——排版（字体/字号/缩进/行距/页边距/行号）由专利预设保证与参考专利一致。
+2. 检查交付文件 `<发明名称>.docx`：所有占位段已替换、章节齐全（摘要 → 权利要求书 → 说明书各章 → 附图清单）、摘要附图指定到位；跑一次 diagnose-only（--preset patent）确认 status=ok 且无 warnings——排版（字体/字号/缩进/行距/页边距、无行号）由专利预设保证与参考专利一致。
 3. 展示最终文件路径并交付；附绘图需求清单，提醒用户附图需另行绘制。
 4. 附上绘图需求清单，提醒用户附图需另行绘制。
 

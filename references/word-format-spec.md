@@ -10,7 +10,7 @@
 | 纸张 | A4（210×297mm） |
 | 页边距 | 上 2.5cm、左 2.5cm、右 2.5cm、下 1.5cm（页眉 1.5cm、页脚 1.75cm） |
 | 行网格 | lines 型，linePitch 312 |
-| 行号 | 每 5 行一标（w:lnNumType countBy=5，每页重新起算） |
+| 行号 | **关闭**（2026-10-25 用户要求；参考原件含每5行行号但不沿用。归一时会主动删除文档中已有行号。如需恢复：`presets.py` 中 `_page` 的 `line_number_count_by` 改为 5） |
 | 正文字体 | 楷体（中文）/ Times New Roman（西文），四号 = 14pt |
 | 正文对齐 | 两端对齐 |
 | 首行缩进 | 2 字符（w:firstLineChars="200"） |

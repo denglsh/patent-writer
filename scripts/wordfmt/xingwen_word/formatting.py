@@ -134,9 +134,12 @@ def set_spacing_before_lines(paragraph: Any, lines: float) -> None:
 
 def apply_line_numbers(section: Any, page_style: dict[str, Any]) -> None:
     count_by = page_style.get("line_number_count_by")
-    if not count_by:
-        return
     sect_pr = section._sectPr
+    nodes = safe_xpath(sect_pr, "./w:lnNumType")
+    if not count_by:
+        for ln in nodes:
+            ln.getparent().remove(ln)
+        return
     nodes = safe_xpath(sect_pr, "./w:lnNumType")
     if nodes:
         ln = nodes[0]

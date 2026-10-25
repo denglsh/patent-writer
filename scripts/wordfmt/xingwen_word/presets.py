@@ -52,7 +52,9 @@ PRESETS: dict[str, dict[str, dict[str, Any]]] = {
 PRESETS["checklist"] = PRESETS["formal"]
 
 # 专利预设：参数提取自参考专利 2026D0071IN（楷体四号、首行缩进2字符、1.5倍行距、
-# 段前0.2行、A4 上/左/右2.5cm 下1.5cm、行网格 lines/312、每5行行号）。
+# 段前0.2行、A4 上/左/右2.5cm 下1.5cm、行网格 lines/312）。
+# 行号默认关闭（2026-10-25 用户要求，见 _page 中 line_number_count_by=None；
+# 归一引擎会主动删除文档中已存在的行号设置；如需恢复改为 5）。
 # 扩展键：line_multiple（倍数行距）、first_indent_chars（按字符首行缩进）、
 # space_before_lines（按行段前）、line_number_count_by（行号间隔）——由 formatting.py 支持。
 PRESETS["patent"] = {
@@ -65,7 +67,7 @@ PRESETS["patent"] = {
         "right_mm": 25,
         "grid_type": "lines",
         "line_pitch_twips": 312,
-        "line_number_count_by": 5,
+        "line_number_count_by": None,  # 用户要求去除行号（2026-10-25）；如需恢复改为 5
     },
     "main_title": {"font": "楷体", "latin_font": "Times New Roman", "size": 14, "bold": True, "align": "center", "line_multiple": 1.5, "widow_control": True},
     "heading_1": {"font": "楷体", "latin_font": "Times New Roman", "size": 14, "bold": True, "align": "left", "first_indent": 0, "line_multiple": 1.5, "widow_control": True},
