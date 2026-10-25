@@ -134,6 +134,12 @@ def paragraph_role_candidates(
         return [role_candidate("empty", 1.0, ["empty_paragraph"])]
 
     if preset == "patent":
+        if index == 0:
+            cand = patent_role_candidates(text)
+            # 文档第一段视为发明名称标题行（除非它本身是部件标题/附图注记）
+            if cand[0].role == "body":
+                return [role_candidate("main_title", 0.9, ["patent_first_line_as_title"])]
+            return cand
         return patent_role_candidates(text)
 
     if SEPARATOR_RE.match(text):
